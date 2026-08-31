@@ -1,0 +1,41 @@
+name: Terraform Security Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze-terraform-plan:
+    name: Analyze Terraform Plan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run Terraform Change Guardian
+        run: |
+          python risk_analyzer.py examples/insecure-plan.json --output risk-report.md
+
+      - name: Add report to workflow summary
+        run: |
+          cat risk-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload risk report
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-risk-report
+          path: risk-report.md
