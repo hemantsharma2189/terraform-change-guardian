@@ -152,12 +152,52 @@ The GitHub Actions workflow automatically:
 
 ## 🚀 Planned Enhancements
 
-- AI-assisted explanations and remediation guidance
 - Pull-request security comments
 - Configurable policy thresholds
 - SARIF output for GitHub Security
 - Unit and integration tests
 - Manual approval for high-risk changes
+
+
+  ## 🤖 AI-Assisted Remediation
+
+The optional AI module converts detected Terraform risks into evidence-based remediation guidance.
+
+It provides:
+
+- Technical risk explanations
+- Potential business impact
+- Recommended remediation steps
+- Confidence levels
+- Human-review warnings
+
+Configure the AI API safely using environment variables:
+
+```bash
+export AI_API_KEY="your-api-key"
+export AI_MODEL="your-model-name"
+export AI_API_URL="your-compatible-api-endpoint"
+```
+
+Generate the standard risk report:
+
+```bash
+python risk_analyzer.py examples/insecure-plan.json
+```
+
+Generate AI-assisted remediation guidance:
+
+```bash
+python ai_explainer.py risk-report.md
+```
+
+The AI-generated output is saved as:
+
+```text
+ai-remediation.md
+```
+
+> API credentials must never be committed to the repository. All AI recommendations require human review before infrastructure changes are deployed.
 
 ## 👨‍💻 Author
 
