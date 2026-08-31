@@ -13,8 +13,8 @@ permissions:
   contents: read
 
 jobs:
-  analyze-terraform-plan:
-    name: Analyze Terraform Plan
+  test-and-analyze:
+    name: Test and Analyze Terraform Plan
     runs-on: ubuntu-latest
 
     steps:
@@ -25,6 +25,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+
+      - name: Run automated tests
+        run: |
+          python -m unittest discover -s tests -v
 
       - name: Run Terraform Change Guardian
         run: |
